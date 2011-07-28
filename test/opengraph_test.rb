@@ -17,6 +17,8 @@ class Song < ActiveRecord::Base
   # This model doesn't uses acts_as_opengraph
 end
 
+FACEBOOK_CONFIG = YAML.load("appId: 123456789").symbolize_keys
+
 class MovieTest < Test::Unit::TestCase
   
   include ActsAsOpengraphHelper
@@ -45,7 +47,10 @@ class MovieTest < Test::Unit::TestCase
   GENERATED_LIKE_BUTTON = %(<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0117500%2F&amp;layout=standard&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>)
   GENERATED_LIKE_BUTTON_CUSTOM_URL = %(<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fexample.com%2Fmovies%2F6&amp;layout=standard&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:35px;" allowTransparency="true"></iframe>)
   GENERATED_LIKE_BUTTON_FBXML = %(<fb:like href=\"http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0117500%2F\" layout=\"standard\" show_faces=\"false\" action=\"like\" colorscheme=\"light\" width=\"450\" height=\"35\" font=\"\"></fb:like>)
-  def setup
+  
+	GENERATED_COMMENTS_FBXML = %(<div id=\"fb-root\"></div><fb:comments href=\"http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0117500%2F\" num_posts=\"2\" width=\"400\" colorscheme=\"light\"></fb:comments>)
+
+	def setup
     setup_db
     assert @movie = Movie.create!(:title => MOVIE_NAME, :description => MOVIE_DESCRIPTION, :imdb => MOVIE_URL)
     assert @song = Song.create!(:title => "Yellow Submarine")
@@ -97,6 +102,10 @@ class MovieTest < Test::Unit::TestCase
     assert_raise(ArgumentError) { opengraph_meta_tags_for(@song) }
   end
 
+	def test_add_fb_sdk
+		
+	end
+
   def test_like_button_helper
     assert_equal GENERATED_LIKE_BUTTON, like_button_for(@movie)
     assert_equal GENERATED_LIKE_BUTTON_CUSTOM_URL, like_button_for(@movie, :href => "http://example.com/movies/6")
@@ -110,5 +119,10 @@ class MovieTest < Test::Unit::TestCase
     # We aren't using acts_as_opengraph for this model, so it should let us know
     assert_raise(ArgumentError) { like_button_for(@song) }
   end
+
+	def test_comments_helper
+		@fb_sdk_included = true # Tells our helper we've already included the facebook JS SDK
+		assert_equal GENERATED_COMMENTS_FBXML, comments_for(@movie)
+	end
   
 end

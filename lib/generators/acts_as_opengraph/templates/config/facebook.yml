@@ -1,0 +1,8 @@
+development:
+  appId: FACEBOOK_DEV_APP_ID
+
+test:
+  appId: FACEBOOK_TEST_APP_ID
+  
+production:
+  appId: FACEBOOK_PRODUCTION_APP_ID
