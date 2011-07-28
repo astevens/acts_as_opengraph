@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Ruben Ascencio"]
   s.email       = ["galateaweb@gmail.com"]
-  s.homepage    = "https://github.com/rubenrails/acts_as_opengraph"
+  s.homepage    = "https://github.com/yosemsweet/acts_as_opengraph"
   s.summary     = %q{ActiveRecord extension that turns your models into graph objects}
   s.description = %q{ActiveRecord extension that turns your models into graph objects. Includes helper methods for adding <meta> tags and the Like Button to your views.}
 
