@@ -84,10 +84,20 @@ module ActsAsOpengraphHelper
     async_fb = <<-END
       <div id="fb-root"></div>
       <script>
+				FBCallbacks = new [];
+				
         window.fbAsyncInit = function() {
           FB.init({appId: '#{ appid }', status: true, cookie: true,
                    xfbml: true});
-					facebook_init_callback();
+					
+					this.callbacks = new Object();
+					this.callbacks.push(func) = function(func){func();};
+					for(var i=0; i < FBCallbacks.length; i++)
+					{
+						FBCallbacks[i]();
+					}
+					FBCallbacks = this.callbacks;
+					
         };
         (function() {
           var e = document.createElement('script'); e.async = true;
