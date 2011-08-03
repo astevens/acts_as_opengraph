@@ -87,6 +87,7 @@ module ActsAsOpengraphHelper
         window.fbAsyncInit = function() {
           FB.init({appId: '#{ appid }', status: true, cookie: true,
                    xfbml: true});
+					facebook_init_callback();
         };
         (function() {
           var e = document.createElement('script'); e.async = true;
