@@ -23,6 +23,7 @@ module ActsAsOpengraphHelper
 		options.each do |key, value|
 			tags.push( %(<meta property="og:#{key}" content="#{Rack::Utils.escape_html(value)}"/>))
 		end
+		tags.push( %(<meta property="fb:app_id" content="#{FACEBOOK_CONFIG[:appId]}"/>))
     tags = tags.join("\n")
     tags.respond_to?(:html_safe) ? tags.html_safe : tags
   end
