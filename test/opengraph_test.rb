@@ -50,6 +50,22 @@ class MovieTest < Test::Unit::TestCase
   
 	GENERATED_COMMENTS_FBXML = %(<div id=\"fb-root\"></div><fb:comments href=\"http%3A%2F%2Fwww.imdb.com%2Ftitle%2Ftt0117500%2F\" num_posts=\"2\" width=\"400\" colorscheme=\"light\"></fb:comments>)
 
+	GENERATED_FBSDK_INIT = <<-TEST
+	<div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({appId: '#{ FACEBOOK_CONFIG[:appId] }', status: true, cookie: true,
+               xfbml: true});
+    };
+    (function() {
+      var e = document.createElement('script'); e.async = true;
+      e.src = document.location.protocol +
+        '//connect.facebook.net/en_US/all.js';
+      document.getElementById('fb-root').appendChild(e);
+    }());
+  </script>
+	TEST
+
 	def setup
     setup_db
     assert @movie = Movie.create!(:title => MOVIE_NAME, :description => MOVIE_DESCRIPTION, :imdb => MOVIE_URL)
@@ -103,7 +119,7 @@ class MovieTest < Test::Unit::TestCase
   end
 
 	def test_add_fb_sdk
-		
+		assert_equal GENERATED_FBSDK_INIT.split.join, fb_javascript_include_tag.split.join
 	end
 
   def test_like_button_helper
