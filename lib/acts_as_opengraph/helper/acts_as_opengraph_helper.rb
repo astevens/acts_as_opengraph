@@ -57,9 +57,6 @@ module ActsAsOpengraphHelper
     end
 
     if config[:xfbml]
-      unless @fb_sdk_included
-        content_for :javascripts, fb_javascript_include_tag( config[:appid], config[:locale] )
-      end
       like_html = %(<fb:like href="#{CGI.escape(href)}" layout="#{config[:layout]}" show_faces="#{config[:show_faces]}" action="#{config[:action]}" colorscheme="#{config[:colorscheme]}" width="#{config[:width]}" height="#{config[:height]}" font="#{config[:font]}"></fb:like>)
     else
       like_html = %(<iframe src="http://www.facebook.com/plugins/like.php?href=#{CGI.escape(href)}&amp;layout=#{config[:layout]}&amp;show_faces=#{config[:show_faces]}&amp;width=#{config[:width]}&amp;action=#{config[:action]}&amp;colorscheme=#{config[:colorscheme]}&amp;height=#{config[:height]}" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:#{config[:width]}px; height:#{config[:height]}px;" allowTransparency="true"></iframe>)
@@ -78,16 +75,12 @@ module ActsAsOpengraphHelper
 
     config[:locale] ||= 'en_US'
 
-    unless @fb_sdk_included
-    	content_for :javascripts, fb_javascript_include_tag( config[:appid], config[:locale] )
-    end
     comments_html = %(<div id=\"fb-root\"></div><fb:comments href=\"#{CGI.escape(href)}\" num_posts=\"#{config[:num_posts]}\" width=\"#{config[:width]}\" colorscheme=\"#{config[:colorscheme]}\"></fb:comments>)
   
 		comments_html.respond_to?(:html_safe) ? comments_html.html_safe : comments_html
   end
 
   def fb_javascript_include_tag(appid=FACEBOOK_CONFIG[:appId], locale='en_US')
-    @fb_sdk_included = true
     async_fb = <<-END
       <div id="fb-root"></div>
       <script>
