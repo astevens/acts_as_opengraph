@@ -91,7 +91,7 @@ module ActsAsOpengraphHelper
                    xfbml: true});
 					
 					this.callbacks = new Object();
-					this.callbacks.push(func) = function(func){func();};
+					this.callbacks.push = function(func){func();};
 					for(var i=0; i < FBCallbacks.length; i++)
 					{
 						FBCallbacks[i]();
